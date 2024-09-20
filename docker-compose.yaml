@@ -1,12 +1,12 @@
 version: '3'
 services:
-  frontend:
-    container_name: frontend
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - auth
+  # frontend:
+  #   container_name: frontend
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - auth  
 
   db:
     container_name: main_database
@@ -22,15 +22,17 @@ services:
     networks:
       - keycloak-network
 
-  auth-db:
+  authdb:
     container_name: auth_database
     image: postgres:latest
     expose:
       - 5432
+    # ports:
+    #   - "5434:5432"
     environment:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloakpassword
-      POSTGRES_DB: keycloakdb
+      POSTGRES_DB: keycloak
     volumes:
       - keycloak_db_data:/var/lib/postgresql/data
     networks:
@@ -40,30 +42,28 @@ services:
     container_name: auth_keycloak
     image: quay.io/keycloak/keycloak:25.0.5
     command:
-      - start-dev
+      - start
     environment:
       KC_HOSTNAME: localhost
       KC_HOSTNAME_PORT: 8080
       KC_HOSTNAME_STRICT_BACKCHANNEL: false
       KC_HTTP_ENABLED: true
       KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HEALTH_ENABLED: true 
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://auth-db:5432/keycloakdb
+      KC_DB_URL_HOST: authdb
+      KC_DB_URL_DATABASE: keycloak
+      # KC_DB_URL: jdbc:postgresql://authdb:5432/keycloak
       KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: keycloakpassword
-      KC_HEALTH_ENABLED: true
-      DB_VENDOR: postgres
-      DB_ADDR: auth-db
-      DB_DATABASE: keycloakdb
-      DB_USER: keycloak
-      DB_PASSWORD: keycloakpassword
+      KC_DB_SCHEMA: public
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - "8080:8080/tcp"
     restart: always
     depends_on:
-      - auth-db
+      - authdb
     networks:
       - keycloak-network
 
@@ -73,3 +73,4 @@ volumes:
 
 networks:
   keycloak-network:
+    driver: bridge
