@@ -31,7 +31,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const classes = useStyles(); // Use the makeStyles styles
-  sessionStorage.clear();
   return (
     <html lang="en">
       <head>
