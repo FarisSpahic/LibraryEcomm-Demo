@@ -6,7 +6,7 @@ import { Button, Typography } from "@mui/material";
 export default function Home() {
 
   const { data: session, status } = useSession();
-  alert(JSON.stringify(session))
+  
   if (status === "loading") {
     return <Typography>Loading...</Typography>;
   }
