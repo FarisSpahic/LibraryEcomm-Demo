@@ -5,14 +5,16 @@ import Footer from "@/components/footer";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./theme";
 import { CssBaseline } from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
+import { SessionProvider } from "next-auth/react";
+
 
 // Define styles using makeStyles
 const useStyles = makeStyles(() => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
     margin: 0,
   },
   main: {
@@ -29,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const classes = useStyles(); // Use the makeStyles styles
-
+  sessionStorage.clear();
   return (
     <html lang="en">
       <head>
@@ -39,11 +41,11 @@ export default function RootLayout({
       <body className={classes.root}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Header />
-          <main className={classes.main}>
-            {children}
-          </main>
-          <Footer />
+          <SessionProvider>
+            <Header />
+            <main className={classes.main}>{children}</main>
+            <Footer />
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>
