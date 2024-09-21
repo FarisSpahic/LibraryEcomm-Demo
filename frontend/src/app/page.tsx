@@ -10,7 +10,6 @@ export default function Home() {
   if (status === "loading") {
     return <Typography>Loading...</Typography>;
   }
-  
 
   if (!session) {
     // Show login button if not authenticated
