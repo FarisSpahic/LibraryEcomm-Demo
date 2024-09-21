@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { Theme } from '@mui/material';
+import { Theme, Typography } from '@mui/material';
 
 // Define styles using makeStyles
 const useStyles = makeStyles((theme: Theme) => ({
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2), // Optionally use theme spacing
   },
   footerTitle: {
-    display: 'inline',
+    color: "yellow"
   }
 }));
 
@@ -24,8 +24,8 @@ export default function Footer() {
 
   return (
     <footer className={classes.footerStyle}>
-      <h1 className={classes.footerTitle}>Footer</h1>
-      <p>footer data</p>
+      <Typography className={classes.footerTitle}>Footer</Typography>
+      <Typography>footer data</Typography>
     </footer>
   );
 }
