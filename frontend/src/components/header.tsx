@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { Button, Theme } from "@mui/material";
 import { signIn, useSession } from "next-auth/react";
 import DropdownMenu from "./dropdown_menu";
+import SearchBar from "./searchbar";
 
 // Define styles using makeStyles
 const useStyles = makeStyles((theme: Theme) => ({
@@ -36,7 +37,7 @@ const Header: React.FC = () => {
   return (
     <header className={classes.headerStyle}>
       <h1 className={classes.headerText}>Header</h1>
-
+      <SearchBar />
       {status === "authenticated" ? (
         <div className={classes.headerUserDiv}>
           <p className={classes.userStatusText}>Welcome {session.user?.name}</p>

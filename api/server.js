@@ -1,18 +1,25 @@
 require("dotenv").config();
 const express = require("express");
 const sequelize = require("./database"); // Adjust path as necessary
+const cors = require("cors");
 
 const bookRoutes = require("./endpoints/book");
 const imageRoutes = require("./endpoints/image");
 
-
 const PORT = process.env.PORT || 4000;
 
 const app = express();
-
 app.use(express.json());
 app.use("/api/Book", bookRoutes);
 app.use("/api/Image", imageRoutes);
+
+app.use(
+  cors({
+    origin: "*", 
+    methods: ["GET", "POST", "PUT", "DELETE"], 
+    credentials: true, 
+  })
+);
 
 sequelize
   .authenticate()
@@ -23,12 +30,13 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
-  sequelize.sync({ force: true }) 
+sequelize
+  .sync({ force: false })
   .then(() => {
-    console.log('Database synced successfully.');
+    console.log("Database synced successfully.");
   })
   .catch((error) => {
-    console.error('Error syncing database:', error);
+    console.error("Error syncing database:", error);
   });
 
 app.listen(PORT, () => {
