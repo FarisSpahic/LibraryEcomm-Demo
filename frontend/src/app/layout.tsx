@@ -19,6 +19,8 @@ const useStyles = makeStyles(() => ({
   },
   main: {
     flexGrow: 1,
+    minHeight: '100vh',
+    backgroundColor: 'white'
   },
   body: {
     margin: 0,

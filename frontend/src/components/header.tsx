@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2),
   },
   headerText: {
-    fontFamily: 'monospace',
+    fontSize: '2em'
   },
   headerUserDiv: {
     display: "flex",
@@ -36,7 +36,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={classes.headerStyle}>
-      <h1 className={classes.headerText}>Header</h1>
+      <h1 className={classes.headerText}>BestLibrary</h1>
       <SearchBar />
       {status === "authenticated" ? (
         <div className={classes.headerUserDiv}>

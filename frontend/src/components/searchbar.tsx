@@ -33,17 +33,12 @@ const SearchBar = () => {
     if (value) {
       try {
         let headers = new Headers();
-
-        headers.append("Content-Type", "application/json");
-        headers.append("Accept", "application/json");
-        
-        headers.append("Origin", "http://localhost:3000");
         console.log(
           "calling url: ",
-          `${process.env.NEXT_PUBLIC_LIBRARY_API_URL}api/Book?limit=5`
+          `${process.env.NEXT_PUBLIC_LIBRARY_API_URL}api/Book?limit=5&searchTerm=${value}`
         );
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_LIBRARY_API_URL}api/Book?limit=5`, {
+          `${process.env.NEXT_PUBLIC_LIBRARY_API_URL}api/Book?limit=5&searchTerm=${value}`, {
           }
         );
         console.log("received payload: ", response);
