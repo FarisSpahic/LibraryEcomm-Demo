@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Grid, Link } from '@mui/material';
 
 export default function Footer() {
   return (
@@ -10,14 +10,54 @@ export default function Footer() {
         width: '100%',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: 'blue',
-        color: 'black',
-        padding: 2, // theme spacing can also be used here as `padding: (theme) => theme.spacing(2)`
+        justifyContent: 'center',
+        backgroundColor: '#2c3e50', // Dark blue color
+        color: 'white',
+        padding: 4,
       }}
     >
-      <Typography sx={{ color: 'yellow' }}>Footer</Typography>
-      <Typography>footer data</Typography>
+      <Grid container spacing={4}>
+        <Grid item xs={12} sm={4}>
+          <Typography variant="h6" gutterBottom sx={{fontFamily: "Gowun Batang"}}>
+            Company Name
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            &copy; {new Date().getFullYear()} Company Name. All Rights Reserved.
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            123 Business St.<br />
+            Suite 456<br />
+            City, State, Zip
+          </Typography>
+        </Grid>
+        
+        <Grid item xs={12} sm={4}>
+          <Typography variant="h6" gutterBottom>
+            Contact Us
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            Phone: (123) 456-7890
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            Fax: (123) 456-7891
+          </Typography>
+          <Typography variant="body2">
+            Email: <Link href="mailto:info@company.com" color="inherit">info@company.com</Link>
+          </Typography>
+        </Grid>
+
+        <Grid item xs={12} sm={4}>
+          <Typography variant="h6" gutterBottom>
+            Follow Us
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Link href="#" color="inherit">Facebook</Link>
+            <Link href="#" color="inherit">Twitter</Link>
+            <Link href="#" color="inherit">Instagram</Link>
+            <Link href="#" color="inherit">LinkedIn</Link>
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

@@ -21,7 +21,7 @@ const Header: React.FC = () => {
       }}
     >
       <a href="/">
-        <Typography component="h1" sx={{ fontSize: "2em" }}>
+        <Typography component="h1" sx={{ fontSize: "2em", fontFamily: "Gowun Batang" }}>
           BestLibrary
         </Typography>
       </a>
