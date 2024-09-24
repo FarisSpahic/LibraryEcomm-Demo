@@ -1,51 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@mui/styles";
+import React, { useState } from "react";
 import { TextField, MenuItem } from "@mui/material";
-import axios from 'axios';
+import axios from "axios";
 import { useRouter } from "next/navigation";
 
-const useStyles = makeStyles(() => ({
-  searchContainer: {
-    position: "relative",
-    backgroundColor: "white",
-  },
-  suggestions: {
-    position: "absolute",
-    top: "100%",
-    left: 0,
-    zIndex: 1,
-    backgroundColor: "white",
-    border: "1px solid #ccc",
-    width: "100%",
-  },
-}));
-
 const SearchBar = () => {
-  const classes = useStyles();
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const router = useRouter();
-  const handleInputChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+
+  const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setQuery(value);
 
     if (value) {
       try {
-        let headers = new Headers();
-        console.log(
-          "calling url: ",
+        const response = await axios.get(
           `${process.env.NEXT_PUBLIC_LIBRARY_API_URL}api/Book?limit=5&searchTerm=${value}`
         );
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_LIBRARY_API_URL}api/Book?limit=5&searchTerm=${value}`, {
-          }
-        );
-        console.log("received payload: ", response);
-
-
-        console.log("received data: ", response);
         setSuggestions(response.data.rows); // Adjust based on your API response structure
       } catch (error) {
         console.error("Error fetching suggestions:", error);
@@ -58,25 +29,45 @@ const SearchBar = () => {
   const handleSuggestionClick = (suggestion: any) => {
     setQuery(suggestion.title);
     setSuggestions([]);
-    router.push(`/book/${suggestion.ISBN}`)
-    // Handle selection logic here (e.g., navigate to book details)
+    router.push(`/book/${suggestion.ISBN}`);
+  };
+
+  const handleBlur = () => {
+    setQuery("");
+    setSuggestions([]);
   };
 
   return (
-    <div className={classes.searchContainer}>
+    <div
+      style={{
+        position: "relative",
+        backgroundColor: "white",
+      }}
+    >
       <TextField
         label="Search Books"
         value={query}
         onChange={handleInputChange}
         variant="outlined"
         fullWidth
+        onBlur={handleBlur} // Clear input and suggestions on blur
       />
       {suggestions.length > 0 && (
-        <div className={classes.suggestions}>
+        <div
+          style={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            zIndex: 1,
+            backgroundColor: "white",
+            border: "1px solid #ccc",
+            width: "100%",
+          }}
+        >
           {suggestions.map((suggestion: any) => (
             <MenuItem
               key={suggestion.id}
-              onClick={() => handleSuggestionClick(suggestion)}
+              onMouseDown={() => handleSuggestionClick(suggestion)}
             >
               {suggestion.title} {/* Adjust based on your suggestion data */}
             </MenuItem>
