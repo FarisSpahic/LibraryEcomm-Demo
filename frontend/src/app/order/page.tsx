@@ -13,6 +13,7 @@ interface Book {
   imageId: number;
   ISBN: string;
 }
+
 const OrderPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -32,12 +33,10 @@ const OrderPage = () => {
   });
 
   useEffect(() => {
-    // If user is not authenticated, redirect to home
     if (status === "unauthenticated") {
       router.push("/");
     }
 
-    // Fetch book details
     const fetchBook = async () => {
       try {
         const bookResponse = await axios.get(
@@ -45,7 +44,6 @@ const OrderPage = () => {
         );
         setBook(bookResponse.data);
         formData.bookId = bookResponse.data.id;
-
       } catch (error) {
         console.error("Error fetching book:", error);
       }
@@ -65,19 +63,14 @@ const OrderPage = () => {
 
   const handlePurchase = async () => {
     try {
-      console.log("User : ", JSON.stringify(session?.user));
       if (session?.user.userId === undefined) {
-        alert("user not signed in!!!");
+        alert("User not signed in!!!");
         return;
       }
-      if(bookId === "" || bookId === "0"){
-        alert("no book is selected!");
+      if (bookId === "" || bookId === "0") {
+        alert("No book is selected!");
         return;
       }
-      console.log("trying to send: ", {
-        ...formData,
-        userId: session?.user?.userId,
-      });
       const bookResponse = await axios.post(
         `${process.env.NEXT_PUBLIC_LIBRARY_API_URL}api/Order/`,
         {
@@ -92,9 +85,9 @@ const OrderPage = () => {
       );
 
       if (bookResponse.status !== 201) alert("Purchase failed!");
-      else {alert("Purchase succeeded!");
-
-        router.push('/');
+      else {
+        alert("Purchase succeeded!");
+        router.push("/");
       }
       setBook(bookResponse.data);
     } catch (error) {
@@ -107,75 +100,163 @@ const OrderPage = () => {
   }
 
   return (
-    <Box sx={{ backgroundColor: "white", color: "black", padding: "3em" }}>
-      <Typography variant="h4">Order: {book.title}</Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1.5em",
-          marginTop: "2em",
+    <Box 
+      sx={{ 
+        backgroundColor: "#f5f5f5", 
+        color: "black", 
+        padding: "3em", 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        minHeight: "100vh" 
+      }}
+    >
+      <Box 
+        sx={{ 
+          backgroundColor: "white", 
+          padding: "2em", 
+          borderRadius: "8px", 
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)", 
+          width: "400px",
         }}
       >
-        <TextField
-          label="Country"
-          name="country"
-          value={formData.country}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
-        <TextField
-          label="City"
-          name="city"
-          value={formData.city}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
-        <TextField
-          label="Address"
-          name="addressLine"
-          value={formData.addressLine}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
-        <TextField
-          label="Phone Number"
-          name="phoneNumber"
-          value={formData.phoneNumber}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
-        <TextField
-          label="Credit Card Number"
-          name="cardNumber"
-          value={formData.cardNumber}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
-        <TextField
-          label="Expiry Date (MM/YY)"
-          name="expiryDate"
-          value={formData.expiryDate}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
-        <TextField
-          label="CVV"
-          name="cvv"
-          value={formData.cvv}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
-        <Button variant="contained" color="primary" onClick={handlePurchase}>
-          Purchase
-        </Button>
+        <Typography variant="h4" sx={{ marginBottom: "1em", textAlign: "center" }}>
+          Order: {book.title}
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1.5em",
+          }}
+        >
+          <TextField
+            label="Country"
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+            fullWidth
+            required
+            variant="outlined"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '&:hover fieldset': {
+                  borderColor: '#3f51b5',
+                },
+              },
+            }}
+          />
+          <TextField
+            label="City"
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            fullWidth
+            required
+            variant="outlined"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '&:hover fieldset': {
+                  borderColor: '#3f51b5',
+                },
+              },
+            }}
+          />
+          <TextField
+            label="Address"
+            name="addressLine"
+            value={formData.addressLine}
+            onChange={handleChange}
+            fullWidth
+            required
+            variant="outlined"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '&:hover fieldset': {
+                  borderColor: '#3f51b5',
+                },
+              },
+            }}
+          />
+          <TextField
+            label="Phone Number"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            fullWidth
+            required
+            variant="outlined"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '&:hover fieldset': {
+                  borderColor: '#3f51b5',
+                },
+              },
+            }}
+          />
+          <TextField
+            label="Credit Card Number"
+            name="cardNumber"
+            value={formData.cardNumber}
+            onChange={handleChange}
+            fullWidth
+            required
+            variant="outlined"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '&:hover fieldset': {
+                  borderColor: '#3f51b5',
+                },
+              },
+            }}
+          />
+          <TextField
+            label="Expiry Date (MM/YY)"
+            name="expiryDate"
+            value={formData.expiryDate}
+            onChange={handleChange}
+            fullWidth
+            required
+            variant="outlined"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '&:hover fieldset': {
+                  borderColor: '#3f51b5',
+                },
+              },
+            }}
+          />
+          <TextField
+            label="CVV"
+            name="cvv"
+            value={formData.cvv}
+            onChange={handleChange}
+            fullWidth
+            required
+            variant="outlined"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '&:hover fieldset': {
+                  borderColor: '#3f51b5',
+                },
+              },
+            }}
+          />
+          <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={handlePurchase}
+            sx={{ 
+              backgroundColor: '#3f51b5', 
+              '&:hover': { 
+                backgroundColor: '#303f9f' 
+              },
+              marginTop: '1em',
+            }}
+          >
+            Purchase
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
