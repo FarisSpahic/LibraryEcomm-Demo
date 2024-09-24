@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent, Typography, CardMedia, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
-
+import Link from 'next/link';
 // Define styles
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
     display: "flex",
     flexDirection: "column",
-    width: "10em",
+    width: "25vw",
     margin: theme.spacing(2),
     borderRadius: "10px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -42,6 +42,7 @@ interface Book {
   author: string;
   price: number;
   imageId: number;
+  ISBN: string;
 }
 
 interface BookCardProps {
@@ -74,6 +75,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
   }, [book.imageId]);
 
   return (
+    <Link href={`/book/${book.ISBN}`} passHref>
     <Card className={classes.card}>
       {imageSrc && (
         <CardMedia
@@ -91,6 +93,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
         </Typography>
       </CardContent>
     </Card>
+    </Link>
   );
 };
 

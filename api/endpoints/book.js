@@ -51,6 +51,29 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get('/ISBN/:isbn', async (req, res) => {
+  try {
+    const { isbn } = req.params;
+    const book = await Book.findOne({ where: { ISBN: isbn } });
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+    );
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    res.json(book);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     let image;

@@ -5,14 +5,14 @@ const cors = require("cors");
 
 const bookRoutes = require("./endpoints/book");
 const imageRoutes = require("./endpoints/image");
-
+const orderRoutes = require("./endpoints/order")
 const PORT = process.env.PORT || 4000;
 
 const app = express();
 app.use(express.json());
 app.use("/api/Book", bookRoutes);
 app.use("/api/Image", imageRoutes);
-
+app.use("/api/Order", orderRoutes);
 app.use(
   cors({
     origin: "*", 
@@ -31,7 +31,7 @@ sequelize
   });
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log("Database synced successfully.");
   })
