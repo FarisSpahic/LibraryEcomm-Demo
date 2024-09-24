@@ -40,7 +40,7 @@ const Header: React.FC = () => {
       <SearchBar />
       {status === "authenticated" ? (
         <div className={classes.headerUserDiv}>
-          <p className={classes.userStatusText}>Welcome {session.user?.name}</p>
+          <p className={classes.userStatusText}>Welcome {session.user.name}</p>
           <DropdownMenu />
         </div>
       ) : (
