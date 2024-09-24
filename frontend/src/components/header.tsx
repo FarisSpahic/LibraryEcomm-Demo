@@ -36,7 +36,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={classes.headerStyle}>
-      <h1 className={classes.headerText}>BestLibrary</h1>
+      <a href="/"><h1 className={classes.headerText}>BestLibrary</h1></a>
       <SearchBar />
       {status === "authenticated" ? (
         <div className={classes.headerUserDiv}>

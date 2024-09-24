@@ -8,13 +8,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   card: {
     display: "flex",
     flexDirection: "column",
-    width: "25vw",
+    width: "100%",
     margin: theme.spacing(2),
     borderRadius: "10px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
   },
   image: {
-    height: "300px",
+    height: "100px",
     objectFit: "cover",
   },
   content: {

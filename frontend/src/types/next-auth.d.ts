@@ -1,23 +1,36 @@
+import "next-auth";
+
+// Extend the session and JWT types
 declare module "next-auth" {
   interface Session {
     accessToken?: string;
-    userId?: string;      // Add userId (Keycloak user ID) to the session
-    expires?: string;     // Session expiration time
-    roles?: string[];     // User roles
+    refreshToken?: string;
+    idToken?: string;
+    expires_at?: number;
+    user: {
+      name?: string;
+      userId?: string;
+      email?: string;
+      roles?: string[];
+    };
   }
 
   interface User {
-    accessToken?: string;
-    userId?: string;      // Add userId (Keycloak user ID)
-    roles?: string[];     // User roles
+    name?: string;
+    userId?: string;
+    email?: string;
+    roles?: string[];
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     accessToken?: string;
-    userId?: string;      // Add userId (Keycloak user ID)
-    roles?: string[];     // User roles
-    expires?: string;     // Token expiration time
+    refreshToken?: string;
+    idToken?: string;
+    expires_at?: number;
+    userId?: string;
+    email?: string;
+    roles?: string[];
   }
 }

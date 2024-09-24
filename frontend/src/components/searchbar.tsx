@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import { TextField, MenuItem } from "@mui/material";
 import axios from 'axios';
+import { useRouter } from "next/navigation";
 
 const useStyles = makeStyles(() => ({
   searchContainer: {
@@ -23,7 +24,7 @@ const SearchBar = () => {
   const classes = useStyles();
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-
+  const router = useRouter();
   const handleInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -54,9 +55,10 @@ const SearchBar = () => {
     }
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setQuery(suggestion);
+  const handleSuggestionClick = (suggestion: any) => {
+    setQuery(suggestion.title);
     setSuggestions([]);
+    router.push(`/book/${suggestion.ISBN}`)
     // Handle selection logic here (e.g., navigate to book details)
   };
 
@@ -74,7 +76,7 @@ const SearchBar = () => {
           {suggestions.map((suggestion: any) => (
             <MenuItem
               key={suggestion.id}
-              onClick={() => handleSuggestionClick(suggestion.title)}
+              onClick={() => handleSuggestionClick(suggestion)}
             >
               {suggestion.title} {/* Adjust based on your suggestion data */}
             </MenuItem>

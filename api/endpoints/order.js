@@ -1,7 +1,7 @@
 const express = require("express");
 const Order = require("../models/order");
 const Address = require("../models/address");
-
+const cors = require('cors');
 const verifyToken = require("../verifyToken");
 
 const router = express.Router();
@@ -12,6 +12,15 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    // res.setHeader("Access-Control-Allow-Credentials", "true");
+    // res.setHeader("Access-Control-Max-Age", "1800");
+    // res.setHeader("Access-Control-Allow-Headers", "content-type");
+    // res.setHeader(
+    //   "Access-Control-Allow-Methods",
+    //   "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+    // );
+
     const {
       country,
       city,
@@ -47,30 +56,20 @@ router.post("/", async (req, res) => {
       userId: userId,
     };
     console.log("Trying to upload this object to addresses: ", addressObject);
-    const address = Address.create(addressObject)
-      .then(() => {
-        console.log("Address created: ", address);
-      })
-      .catch((err) =>
-        res
-          .status(500)
-          .json({ error: "error creating new address record!", log: err })
-      );
-    const order = Order.create({
-      bookId: bookId,
-      addressId: address.id || 1,
-      userId: userId || "admin",
-    })
+    const address = await Address.create(addressObject);
+
+    console.log("Address created: ", address);
+
+    const orderObject = {
+        bookId: Number(bookId),
+        addressId: Number(address.dataValues.id) || 1,
+        userId: userId || "admin",
+      };
+    const order = await Order.create(orderObject);
+    console.log('Order object tried to upload: ', orderObject)
     // .catch((err) => res.status(500).json({err: err, msg: 'failed performing order...'}));
 
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "PUT, POST, GET, DELETE, PATCH, OPTIONS"
-    );
+    
     res.status(201).json(order);
   } catch (error) {
     console.error(error);
@@ -81,5 +80,6 @@ router.post("/", async (req, res) => {
 // router.delete("/:id", async (req, res) => {
 
 // });
+router.options('/', cors());  // Preflight handling for this route
 
 module.exports = router;
