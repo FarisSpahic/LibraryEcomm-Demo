@@ -36,6 +36,56 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+router.patch("/:id", upload.single("image"), async (req, res) => {
+  try {
+    const bookId = req.params.id;
+    const book = await Book.findByPk(bookId);
+
+    if (!book) {
+      return res.status(404).json({ error: "Book not found." });
+    }
+
+    if (!req.file || !req.file.buffer) {
+      return res.status(400).json({ error: "No image file uploaded." });
+    }
+
+    // Check if the book already has an image
+    let image;
+    if (book.imageId) {
+      // Update the existing image
+      image = await Image.findByPk(book.imageId);
+      if (!image) {
+        return res.status(404).json({ error: "Image not found." });
+      }
+      image.imgData = req.file.buffer; // Update the image data
+      await image.save();
+    } else {
+      // Create a new image if none exists
+      image = await Image.create({ imgData: req.file.buffer });
+      book.imageId = image.id;
+      await book.save();
+    }
+
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+    );
+
+    res.json({
+      message: "Book image updated successfully.",
+      imageId: image.id,
+    });
+  } catch (error) {
+    console.error("Error updating book image:", error);
+    res.status(500).json({ error: "Error updating book image." });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const book = await Book.findByPk(req.params.id);
