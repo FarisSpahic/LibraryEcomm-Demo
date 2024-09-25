@@ -8,7 +8,8 @@ declare module "next-auth" {
     idToken?: string;
     expires_at?: number;
     user: {
-      name?: string;
+      firstName?: string | null;
+      lastName?: string;
       userId?: string;
       email?: string;
       roles?: string[];
@@ -16,11 +17,15 @@ declare module "next-auth" {
   }
 
   interface User {
-    name?: string;
+    firstName?: string;
+    lastName?: string;
     userId?: string;
     email?: string;
     roles?: string[];
   }
+}
+interface Profile {
+  roles?: string[];
 }
 
 declare module "next-auth/jwt" {
