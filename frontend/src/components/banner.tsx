@@ -1,16 +1,14 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-interface BannerProps {
-  imgSrc: string;
-}
 
-const Banner: React.FC<BannerProps> = ({ imgSrc }) => {
+
+const Banner = () => {
   return (
     <Box
       sx={{
         width: "80vw", // Adjust width as per your requirements
-        height: "20vh", // Adjust height as per your requirements
+        height: "40vh", // Adjust height as per your requirements
         position: "relative",
         backgroundColor: "primary.main", // Fallback color using theme
         display: "flex",
@@ -22,20 +20,16 @@ const Banner: React.FC<BannerProps> = ({ imgSrc }) => {
         overflow: "hidden",
       }}
     >
-      <Box
-        component="img"
-        src={imgSrc}
-        alt="Banner"
-        sx={{
+      <img src="/images/front-banner-1.jpg" alt="Test Image" style={{
           width: "100%",
-          height: "100%",
+          height: "70vh",
           objectFit: "cover",
           position: "absolute",
           top: 0,
           left: 0,
-          zIndex: -1, // Send the image behind the text
-        }}
-      />
+          zIndex: 10000, // Send the image behind the text
+        }} />
+
     </Box>
   );
 };

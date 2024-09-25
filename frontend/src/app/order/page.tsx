@@ -102,25 +102,26 @@ const OrderPage = () => {
   return (
     <Box 
       sx={{ 
-        backgroundColor: "#f5f5f5", 
+        backgroundColor: "#f0f0f0", // Light gray background
         color: "black", 
         padding: "3em", 
         display: "flex", 
         justifyContent: "center", 
         alignItems: "center", 
-        minHeight: "100vh" 
+        minHeight: "100vh",
+        fontFamily: "Inter, sans-serif", // Apply Inter font globally
       }}
     >
       <Box 
         sx={{ 
           backgroundColor: "white", 
           padding: "2em", 
-          borderRadius: "8px", 
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)", 
+          borderRadius: "12px", 
+          boxShadow: "0 6px 30px rgba(0, 0, 0, 0.15)", // Softer shadow
           width: "400px",
         }}
       >
-        <Typography variant="h4" sx={{ marginBottom: "1em", textAlign: "center" }}>
+        <Typography variant="h4" sx={{ marginBottom: "1em", textAlign: "center", fontWeight: 'bold', fontFamily: "Gowun Batang" }}>
           Order: {book.title}
         </Typography>
         <Box
@@ -140,8 +141,11 @@ const OrderPage = () => {
             variant="outlined"
             sx={{
               '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#d0d0d0', // Light gray border
+                },
                 '&:hover fieldset': {
-                  borderColor: '#3f51b5',
+                  borderColor: '#b0b0b0', // Darker gray on hover
                 },
               },
             }}
@@ -156,8 +160,11 @@ const OrderPage = () => {
             variant="outlined"
             sx={{
               '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#d0d0d0',
+                },
                 '&:hover fieldset': {
-                  borderColor: '#3f51b5',
+                  borderColor: '#b0b0b0',
                 },
               },
             }}
@@ -172,8 +179,11 @@ const OrderPage = () => {
             variant="outlined"
             sx={{
               '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#d0d0d0',
+                },
                 '&:hover fieldset': {
-                  borderColor: '#3f51b5',
+                  borderColor: '#b0b0b0',
                 },
               },
             }}
@@ -188,8 +198,11 @@ const OrderPage = () => {
             variant="outlined"
             sx={{
               '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#d0d0d0',
+                },
                 '&:hover fieldset': {
-                  borderColor: '#3f51b5',
+                  borderColor: '#b0b0b0',
                 },
               },
             }}
@@ -204,8 +217,11 @@ const OrderPage = () => {
             variant="outlined"
             sx={{
               '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#d0d0d0',
+                },
                 '&:hover fieldset': {
-                  borderColor: '#3f51b5',
+                  borderColor: '#b0b0b0',
                 },
               },
             }}
@@ -220,8 +236,11 @@ const OrderPage = () => {
             variant="outlined"
             sx={{
               '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#d0d0d0',
+                },
                 '&:hover fieldset': {
-                  borderColor: '#3f51b5',
+                  borderColor: '#b0b0b0',
                 },
               },
             }}
@@ -236,22 +255,27 @@ const OrderPage = () => {
             variant="outlined"
             sx={{
               '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#d0d0d0',
+                },
                 '&:hover fieldset': {
-                  borderColor: '#3f51b5',
+                  borderColor: '#b0b0b0',
                 },
               },
             }}
           />
           <Button 
             variant="contained" 
-            color="primary" 
             onClick={handlePurchase}
             sx={{ 
-              backgroundColor: '#3f51b5', 
+              backgroundColor: '#d3d3d3', // Light gray button
+              color: 'black',
+              fontFamily: "Inter", 
               '&:hover': { 
-                backgroundColor: '#303f9f' 
+                backgroundColor: '#c0c0c0' // Darker gray on hover
               },
               marginTop: '1em',
+              fontWeight: '700',
             }}
           >
             Purchase

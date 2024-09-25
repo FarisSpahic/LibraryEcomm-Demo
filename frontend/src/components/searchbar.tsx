@@ -41,10 +41,10 @@ const SearchBar = () => {
     <div
       style={{
         position: "relative",
-        backgroundColor: "white",
       }}
     >
       <TextField
+        style={{fontFamily: "Inter",}}
         label="Search Books"
         value={query}
         onChange={handleInputChange}
@@ -55,6 +55,7 @@ const SearchBar = () => {
       {suggestions.length > 0 && (
         <div
           style={{
+            fontFamily: "Inter",
             position: "absolute",
             top: "100%",
             left: 0,

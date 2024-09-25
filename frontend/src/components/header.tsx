@@ -15,7 +15,7 @@ const Header: React.FC = () => {
         height: "10vh",
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor: (theme) => theme.palette.primary.main,
+        backgroundColor: "#f4f4f4",
         color: "black",
         padding: 2,
       }}

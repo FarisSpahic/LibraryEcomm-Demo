@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, Typography, CardMedia, Box } from "@mui/material";
 import axios from "axios";
-import Link from 'next/link';
+import Link from "next/link";
 
 interface Book {
   title: string;
@@ -25,7 +25,6 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_LIBRARY_API_URL}api/Image/${book.imageId}`
         );
-        console.log("img response data", response.data);
 
         // Convert image bytes to base64 string for display
         const base64Image = Buffer.from(response.data.imgData, "binary").toString(
@@ -47,20 +46,25 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          width: "100%",
-          margin: 2, // theme.spacing(2)
-          borderRadius: "10px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          cursor: 'pointer', // Add cursor pointer for better UX
-          '&:hover': { boxShadow: '0 6px 10px rgba(0, 0, 0, 0.2)' } // Add hover effect
+          width: "250px",
+          margin: 2,
+          borderRadius: "15px",
+          boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)", // Soft shadow for depth
+          cursor: "pointer",
+          transition: "transform 0.3s ease-in-out", // Smooth hover effect
+          "&:hover": {
+            transform: "translateY(-5px)", // Subtle lift on hover
+            boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+          },
         }}
       >
         {imageSrc && (
           <CardMedia
             component="img"
             sx={{
-              height: "100px",
+              height: "150px", // Increased height for a more prominent image
               objectFit: "cover",
+              borderRadius: "15px 15px 0 0", // Rounded top corners
             }}
             src={imageSrc}
             alt={book.title}
@@ -68,32 +72,41 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
         )}
         <CardContent
           sx={{
-            padding: 2, // theme.spacing(2)
+            padding: "1.5em", // Ample padding for a clean look
+            backgroundColor: "#F7F4F3", // Pastel background to match theme
+            borderRadius: "0 0 15px 15px", // Rounded bottom corners
           }}
         >
           <Typography
+            variant="h6"
             sx={{
-              fontSize: "18px",
-              fontWeight: "bold",
-              marginBottom: 1, // theme.spacing(1)
+              fontSize: "1.1rem",
+              fontWeight: "600",
+              marginBottom: "0.5em",
+              color: "#3C3C3C", // Muted text color for titles
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
             }}
           >
             {book.title}
           </Typography>
           <Typography
+            variant="body2"
             sx={{
-              fontSize: "16px",
-              color: "text.secondary",
-              marginBottom: 1, // theme.spacing(1)
+              fontSize: "0.95rem",
+              color: "#8B8B8B", // Lighter gray for author
+              marginBottom: "0.75em",
             }}
           >
             {book.author}
           </Typography>
           <Typography
+            variant="body1"
             sx={{
-              fontSize: "16px",
-              fontWeight: "bold",
-              color: "primary.main",
+              fontWeight: "700",
+              fontSize: "1.1rem",
+              color: "#FF69B4", // Pink accent for price
             }}
           >
             ${book.price.toFixed(2)}
