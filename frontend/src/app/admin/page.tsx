@@ -14,6 +14,7 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
+import axios from "axios";
 
 export default function Profile() {
   const { data: session, status } = useSession();
@@ -27,7 +28,6 @@ export default function Profile() {
     availability: false,
     totalPages: 0,
     price: 0,
-    imageId: 0,
   });
 
   useEffect(() => {
@@ -53,15 +53,29 @@ export default function Profile() {
   };
 
   // Handle form submission
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
-    // Handle form submission here (e.g., API request to submit the book)
+    const bookResponse = await axios.post(
+      `${process.env.NEXT_PUBLIC_LIBRARY_API_URL}api/Book/`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+          
+        },
+        
+      }
+    );
+    if (bookResponse.status === 201) alert("Book has been posted!");
     console.log("Form Data: ", formData);
   };
 
   if (status === "loading" || (status === "authenticated" && !hasRole)) {
     return (
-      <Box sx={{ padding: "2em", backgroundColor: "#f4f4f4", minHeight: "100vh" }}>
+      <Box
+        sx={{ padding: "2em", backgroundColor: "#f4f4f4", minHeight: "100vh" }}
+      >
         <Typography variant="h5" style={{ color: "black" }}>
           Loading...
         </Typography>
@@ -70,7 +84,9 @@ export default function Profile() {
   }
 
   return (
-    <Box sx={{ padding: "2em", backgroundColor: "#f4f4f4", minHeight: "100vh" }}>
+    <Box
+      sx={{ padding: "2em", backgroundColor: "#f4f4f4", minHeight: "100vh" }}
+    >
       <Paper
         elevation={3}
         sx={{
@@ -80,9 +96,9 @@ export default function Profile() {
           borderRadius: "8px",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", marginBottom: "2em" }}>
-
-        </Box>
+        <Box
+          sx={{ display: "flex", alignItems: "center", marginBottom: "2em" }}
+        ></Box>
 
         <Box
           component="form"
@@ -154,16 +170,6 @@ export default function Profile() {
             name="price"
             type="number"
             value={formData.price}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            label="Image ID"
-            name="imageId"
-            type="number"
-            value={formData.imageId}
             onChange={handleChange}
             fullWidth
             margin="normal"

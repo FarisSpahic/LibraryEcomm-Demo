@@ -36,7 +36,7 @@ const Header: React.FC = () => {
           }}
         >
           <Typography component="p" sx={{ display: "inline" }}>
-            Welcome {session.user.name}
+            Welcome {session.user.email}
           </Typography>
           <DropdownMenu />
         </Box>

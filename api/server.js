@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const bookRoutes = require("./endpoints/book");
 const imageRoutes = require("./endpoints/image");
-const orderRoutes = require("./endpoints/order")
+const orderRoutes = require("./endpoints/order");
 const PORT = process.env.PORT || 4000;
 
 const app = express();
@@ -16,9 +16,13 @@ app.use("/api/Order", orderRoutes);
 
 app.use(
   cors({
-    origin: "*", 
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], 
-    credentials: true, 
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Origin", "Content-Type", "Access-Control-Allow-Origin"],
+    exposedHeaders: ["Access-Control-Allow-Origin"],
+    maxAge: 86400,
+    preflightContinue: false
   })
 );
 

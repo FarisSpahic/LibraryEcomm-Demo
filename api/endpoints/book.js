@@ -51,7 +51,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get('/ISBN/:isbn', async (req, res) => {
+router.get("/ISBN/:isbn", async (req, res) => {
   try {
     const { isbn } = req.params;
     const book = await Book.findOne({ where: { ISBN: isbn } });
@@ -64,13 +64,13 @@ router.get('/ISBN/:isbn', async (req, res) => {
       "PUT, POST, GET, DELETE, PATCH, OPTIONS"
     );
     if (!book) {
-      return res.status(404).json({ message: 'Book not found' });
+      return res.status(404).json({ message: "Book not found" });
     }
 
     res.json(book);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -81,7 +81,7 @@ router.post("/", upload.single("image"), async (req, res) => {
       image = await Image.create({ imgData: req.file.buffer });
       console.log("Uploaded Image: ", image);
     } else {
-      image = { id : null};
+      image = { id: null };
     }
 
     const { title, author, ISBN, publisher, availability, totalPages, price } =
@@ -98,7 +98,14 @@ router.post("/", upload.single("image"), async (req, res) => {
       price,
       imageId: image.id,
     });
-
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "864000");
+    res.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+    );
     res.status(201).json(newBook);
   } catch (error) {
     console.error(error);
