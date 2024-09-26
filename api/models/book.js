@@ -2,7 +2,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database'); // Adjust path as needed
 const Image = require('./image'); // Adjust path as needed
-
+const Tag = require('./tag');
 const Book = sequelize.define('Book', {
   title: {
     type: DataTypes.STRING,
@@ -44,5 +44,6 @@ const Book = sequelize.define('Book', {
 
 // Define associations
 Book.belongsTo(Image, { foreignKey: 'imageId' });
-
+Book.belongsToMany(Tag, { through: 'BookTags', foreignKey: 'bookId' });
+Tag.belongsToMany(Book, { through: 'BookTags', foreignKey: 'tagId' });
 module.exports = Book;

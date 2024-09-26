@@ -94,17 +94,55 @@ const books = [
   }
 ];
 
-// Function to post books one by one
-const postBooks = async () => {
-  for (const book of books) {
+// Array of categories to upload
+const categories = [
+  "Fiction",
+  "Science Fiction",
+  "Fantasy",
+  "Non-Fiction",
+  "Biography",
+  "Mystery",
+  "Thriller",
+  "Romance",
+  "Historical",
+  "Children's",
+  "Young Adult",
+  "Self-Help",
+  "Health",
+  "Cooking",
+  "Travel",
+  "Graphic Novel",
+  "Poetry",
+  "Humor",
+  "Science",
+  "Religion"
+];
+
+// Function to post categories to the Tag table
+const postCategories = async () => {
+  for (const category of categories) {
     try {
-      const response = await axios.post('http://localhost:4000/api/Book', book);
-      console.log(`Book posted: ${book.title} - Status: ${response.status}`);
+      const response = await axios.post('http://localhost:4000/api/Tag', { tag: category });
+      console.log(`Category posted: ${category} - Status: ${response.status}`);
     } catch (error) {
-      console.error(`Error posting book: ${book.title}`, error.message);
+      console.error(`Error posting category: ${category}`, error.message);
     }
   }
 };
 
+// Execute the function to post categories
+postCategories();
+// Function to post books one by one
+// const postBooks = async () => {
+//   for (const book of books) {
+//     try {
+//       const response = await axios.post('http://localhost:4000/api/Book', book);
+//       console.log(`Book posted: ${book.title} - Status: ${response.status}`);
+//     } catch (error) {
+//       console.error(`Error posting book: ${book.title}`, error.message);
+//     }
+//   }
+// };
+
 // Execute the function to post books
-postBooks();
+// postBooks();

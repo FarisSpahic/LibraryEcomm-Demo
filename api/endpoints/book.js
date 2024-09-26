@@ -1,9 +1,11 @@
 const express = require("express");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const multer = require("multer");
 const Book = require("../models/book");
 const Image = require("../models/image");
 const verifyToken = require("../verifyToken");
+const Order = require("../models/order");
+const BookTags = require("../models/booktags");
 
 const router = express.Router();
 const upload = multer();
@@ -36,6 +38,71 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+router.get("/recommendations/:id", async (req, res) => {
+  const { page = 1, limit = 3 } = req.query;
+  const userId = req.params.id;
+
+  try {
+    // Step 1: Get all orders for the user
+    const orders = await Order.findAll({
+      where: { userId: userId },
+    });
+    console.log("Orders of the user: ", orders)
+    // Extract book IDs from the orders
+    const purchasedBookIds = orders.map((order) => order.bookId);
+
+    // Step 2: Get tag IDs for those purchased books
+    const tags = await BookTags.findAll({
+      where: {
+        bookId: {
+          [Op.in]: purchasedBookIds,
+        },
+      },
+      attributes: ["tagId"],
+    });
+    console.log("Tags of the booktags: ", tags)
+
+    // Extract unique tag IDs
+    const tagIds = [...new Set(tags.map((tag) => tag.tagId))];
+    console.log("TagIDS: ", tagIds)
+    const booksWithSameTag = await BookTags.findAll({
+      where: {
+        tagId: {
+          [Op.in]: tagIds,
+        },
+      },
+      attributes: ["bookId"],
+    });
+    console.log("Got the books with same tag: ", booksWithSameTag)
+    // Step 3: Find other books with those tags, excluding purchased books
+    const bookIds = [...new Set(booksWithSameTag.map((book) => book.bookId))];
+    console.log("Trying to find books with these id's: ", bookIds)
+    const recommendedBooks = await Book.findAndCountAll({
+      where: {
+        id: {
+          [Op.in]: bookIds, // Exclude purchased books
+        },
+      },
+    });
+    console.log("Recs of the booktags: ", recommendedBooks)
+
+    // Step 4: Return recommended books
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+    );
+
+    res.json(recommendedBooks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error fetching recommended books" });
+  }
+});
 
 router.patch("/:id", upload.single("image"), async (req, res) => {
   try {
@@ -151,7 +218,10 @@ router.post("/", upload.single("image"), async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Max-Age", "864000");
-    res.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Origin, Content-Type, Authorization"
+    );
     res.setHeader(
       "Access-Control-Allow-Methods",
       "PUT, POST, GET, DELETE, PATCH, OPTIONS"

@@ -6,6 +6,8 @@ const cors = require("cors");
 const bookRoutes = require("./endpoints/book");
 const imageRoutes = require("./endpoints/image");
 const orderRoutes = require("./endpoints/order");
+const tagRoutes = require("./endpoints/tag");
+
 const PORT = process.env.PORT || 4000;
 
 const app = express();
@@ -13,6 +15,7 @@ app.use(express.json());
 app.use("/api/Book", bookRoutes);
 app.use("/api/Image", imageRoutes);
 app.use("/api/Order", orderRoutes);
+app.use("/api/Tag", tagRoutes);
 
 app.use(
   cors({

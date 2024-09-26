@@ -6,21 +6,19 @@ const verifyToken = require("../verifyToken");
 
 const router = express.Router();
 
-// router.get("/:id", async (req, res) => {
+router.use(cors());
 
-// });
+// Preflight handling for the POST route
+router.options("/", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Headers", "content-type");
+  res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
+  res.sendStatus(204); // No Content
+});
 
 router.post("/", async (req, res) => {
   try {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    // res.setHeader("Access-Control-Allow-Credentials", "true");
-    // res.setHeader("Access-Control-Max-Age", "1800");
-    // res.setHeader("Access-Control-Allow-Headers", "content-type");
-    // res.setHeader(
-    //   "Access-Control-Allow-Methods",
-    //   "PUT, POST, GET, DELETE, PATCH, OPTIONS"
-    // );
-
     const {
       country,
       city,
@@ -76,10 +74,5 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Error making an order..." });
   }
 });
-
-// router.delete("/:id", async (req, res) => {
-
-// });
-router.options('/', cors());  // Preflight handling for this route
 
 module.exports = router;
