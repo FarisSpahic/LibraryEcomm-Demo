@@ -5,9 +5,12 @@ import axios from "axios";
 import { Typography, Box, Container } from "@mui/material";
 import Banner from "@/components/banner";
 import BookCard from "@/components/bookcard"; // Assume you created this component
+import { useSession } from "next-auth/react"; // Assuming you are using NextAuth for authentication
 
 export default function Home() {
+  const { data: session, status } = useSession(); // Get session data from NextAuth
   const [books, setBooks] = useState([]);
+  const [recommendedBooks, setRecommendedBooks] = useState([]);
 
   // Fetch books data from the API
   useEffect(() => {
@@ -25,6 +28,25 @@ export default function Home() {
     fetchBooks();
   }, []);
 
+  // Fetch recommendations if user is authenticated
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      if (status === "authenticated") {
+        try {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_LIBRARY_API_URL}api/Book/recommendations/${session.user.userId}`
+          );
+          console.log("Recs response: ", JSON.stringify(response.data));
+          setRecommendedBooks(response.data.rows); // assuming the API returns an array of recommended books
+        } catch (error) {
+          console.error("Error fetching recommendations:", error);
+        }
+      }
+    };
+
+    fetchRecommendations();
+  }, [session]);
+
   return (
     <Container
       maxWidth="lg"
@@ -33,7 +55,6 @@ export default function Home() {
         flexDirection: "column",
         minHeight: "100vh",
         padding: "2.5em 4em",
-        // backgroundColor: "#F7F4F3", // Soft pastel background
         color: "#3C3C3C", // Muted dark color for text
       }}
     >
@@ -47,9 +68,12 @@ export default function Home() {
             marginBottom: "0.5em",
           }}
         >
-          Your Library
+          Your Library.
         </Typography>
-        <Typography variant="body1" sx={{ color: "#8B8B8B", fontFamily: "Inter", }}>
+        <Typography
+          variant="body1"
+          sx={{ color: "#8B8B8B", fontFamily: "Inter" }}
+        >
           The best titles are available for you right now!
         </Typography>
       </Box>
@@ -65,8 +89,19 @@ export default function Home() {
       >
         <Banner />
       </Box>
-        <Typography sx={{fontFamily: "Inter", fontSize: "2rem", fontWeight: "700", marginBottom: "1em", textAlign: "center"}}>Check our recommendations</Typography>
-      {/* Book Cards Section */}
+
+      {/* All Books Section */}
+      <Typography
+        sx={{
+          fontFamily: "Inter",
+          fontSize: "2rem",
+          fontWeight: "700",
+          marginBottom: "1em",
+          textAlign: "center",
+        }}
+      >
+        Popular Books
+      </Typography>
       <Box
         sx={{
           display: "flex",
@@ -79,6 +114,36 @@ export default function Home() {
           <BookCard key={book.id} book={book} />
         ))}
       </Box>
+
+      {/* Recommended Books Section - Conditional Rendering */}
+      {recommendedBooks.length > 0 && (
+        <>
+          <Typography
+            sx={{
+              fontFamily: "Inter",
+              fontSize: "2rem",
+              fontWeight: "700",
+              marginBottom: "1em",
+              textAlign: "center",
+              marginTop: "3em",
+            }}
+          >
+            Check our recommendations
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "2em",
+              justifyContent: "center",
+            }}
+          >
+            {recommendedBooks.map((book: any) => (
+              <BookCard key={book.id} book={book} />
+            ))}
+          </Box>
+        </>
+      )}
     </Container>
   );
 }
